@@ -2,6 +2,11 @@
 
 namespace MathUtils
 {
+    /*
+    * TEST CASES
+    * Operator precedence
+    * Integer Divison
+    */
     public class MathUtils
     {
         public static double Average(int a, int b)
