@@ -30,7 +30,7 @@ namespace ChallengeWinSystem.Q3_Reptile
     TEST CASES
     FireDragon is IReptile
     Fire dragons make other fire dragons -> Los dragones de fuego crean otros dragones de fuego.
-    Other species eggs don't make fire dragons: System.NotImplementedExcepcion at ReptileEgg.ctor (Constructor in ReptileEgg)
+    Other species eggs don't make fire dragons: System.NotImplementedException at ReptileEgg.ctor (Constructor in ReptileEgg)
     ReptileEggs can't hatch twice -> No puede eclosionar dos veces
 
      */
@@ -53,14 +53,37 @@ namespace ChallengeWinSystem.Q3_Reptile
         }
     }
 
+    public class Alligator : IReptile
+    {
+        public Alligator() { }
+
+        public ReptileEgg Lay()
+        {
+            //Esto tiene que crear una expcecion porque solo los FireDragon pueden crear FireDragons
+            return new ReptileEgg(() => new FireDragon());
+        }
+    }
+
     public class ReptileEgg
     {
         private bool IsHatched;
-        private Func<IReptile> CreateReptile;
+        private readonly IReptile _reptile;
 
         public ReptileEgg(Func<IReptile> createReptile)
         {
-            CreateReptile = createReptile;
+            //Le sacamos la parte del constructor a la clase padre que llama al constructor
+            var targetFullName = createReptile.Target.ToString().Replace("+<>c", "");
+            //Obtenemos el nombre completo de la clase de FireDragon
+            var typeFireDragonFullName = typeof(FireDragon).FullName;
+            
+            //Verificamos si el metodo delegado construye un FireDragon y si la clase padre es FireDragon
+            if (_reptile is FireDragon && !targetFullName.Equals(typeFireDragonFullName))
+            {
+                throw new NotImplementedException("Waiting to be implemented.");
+            }
+
+            _reptile = createReptile();
+
         }
 
         /// <summary>
@@ -77,7 +100,7 @@ namespace ChallengeWinSystem.Q3_Reptile
             else
             {
                 IsHatched = true;
-                return null;
+                return _reptile;
             }
         }
     }

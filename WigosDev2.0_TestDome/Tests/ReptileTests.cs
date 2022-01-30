@@ -25,5 +25,14 @@ namespace Tests
             var childFireDragon = egg.Hatch();
             egg.Hatch();
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(NotImplementedException))]
+        public void OtherSpeciesEggsDontMakeFireDragons()
+        {
+            var alligator = new Alligator();
+            var egg = alligator.Lay();
+            var childFireDragon = egg.Hatch();
+        }
     }
 }
