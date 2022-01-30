@@ -17,39 +17,68 @@ namespace ChallengeWinSystem.Q3_Reptile
      * When a ReptileEgg hatches, a new reptile will be created of the same species that laid the egg.
      * A System.InvalidOperationException is thrown if a ReptileEgg tries to hatch more than once.
      * 
+     * Los científicos han descubierto una especie de dragones que escupen fuego.
+     * El análisis de ADN del dragón revela que es un reptil que evolucionó a partir de un ancestro común del cocodrilo, hace cientos de millones de años.
+     * Aunque estén relacionados, las diferentes especies de reptiles no pueden cruzarse.
+     * A los investigadores les gustaría desarrollar un modelo de ciclo de vida de esta rara especie, para estudiarlos mejor.
+     * Complete la implementación a continuación para que:
+     * 
      * La especie firedragon implementa la interfaz IReptile
         Cuando eclosiona un huevo de reptil, se creará un nuevo reptil de la misma especie que puso el huevo.
         Se lanza una System.InvalidOperationException si un ReptileEgg intenta eclosionar más de una vez
 
     TEST CASES
     FireDragon is IReptile
-    Fire dragons make other fire dragons
-    Other species eggs don't make fire dragons: System.NotImplementedExcepcion at ReptileEgg.ctor -> Line 19
-    ReptileEggs can't hatch twice
+    Fire dragons make other fire dragons -> Los dragones de fuego crean otros dragones de fuego.
+    Other species eggs don't make fire dragons: System.NotImplementedExcepcion at ReptileEgg.ctor (Constructor in ReptileEgg)
+    ReptileEggs can't hatch twice -> No puede eclosionar dos veces
 
      */
     public interface IReptile
     {
+        /// <summary>
+        /// Poner huevo
+        /// </summary>
+        /// <returns></returns>
         ReptileEgg Lay();
     }
 
-    public class FireDragon
+    public class FireDragon : IReptile
     {
-        public FireDragon()
+        public FireDragon() { }
+
+        public ReptileEgg Lay()
         {
+            return new ReptileEgg(() => new FireDragon());
         }
     }
 
     public class ReptileEgg
     {
+        private bool IsHatched;
+        private Func<IReptile> CreateReptile;
+
         public ReptileEgg(Func<IReptile> createReptile)
         {
-            throw new NotImplementedException("Waiting to be implemented.");
+            CreateReptile = createReptile;
         }
 
+        /// <summary>
+        /// Eclosionar huevo
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException"></exception>
         public IReptile Hatch()
         {
-            throw new NotImplementedException("Waiting to be implemented.");
+            if (IsHatched)
+            {
+                throw new System.InvalidOperationException("Cannot hatch twice");
+            }
+            else
+            {
+                IsHatched = true;
+                return null;
+            }
         }
     }
 
