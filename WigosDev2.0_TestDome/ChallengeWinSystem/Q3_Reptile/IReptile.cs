@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ChallengeWinSystem.Q3_Reptile
 {
@@ -59,7 +55,7 @@ namespace ChallengeWinSystem.Q3_Reptile
 
         public ReptileEgg Lay()
         {
-            //Esto tiene que crear una expcecion porque solo los FireDragon pueden crear FireDragons
+            //Esto tiene que crear una excepcion porque solo los FireDragon pueden crear FireDragon
             return new ReptileEgg(() => new FireDragon());
         }
     }
